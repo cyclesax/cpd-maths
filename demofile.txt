@@ -1,0 +1,2 @@
+Replace any existing contents of file with this string ... And another string
+And then this will appear on a new line
