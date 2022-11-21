@@ -298,12 +298,89 @@ print(lamb1(5, 6, 2))
 # to lay out function headers with lots of long names etc.
 # There's a whole load of comments about how to use white space around other parts
 # of the language such as commas etc.  This isn't surprising relative to other
-# languages
+# languages.
+# Whilst it would be a good idea to read and understand some of the
+# information, one of the most important recommendations is to follow the
+# style of the code that you are maintaining in a team.
 
+# Part 4: 21 November: Classes
+# ============================
 
+# Python supports classes.  The approach to classes will be similar to
+# other languages.
 
+# We define a class and it contains functions that belong to the class
+# and implicitly defines variables that are members of the class. 
+class Rocket():
+    # Rocket simulates a rocket ship for a game, or a physics simulation.
+    
+    # The __init__(self) function is called for each instance of the
+    # object.  This is done automatically upon creation.  The self
+    # variable is required.
+    def __init__(self, x=0, y=0):
+        # Each rocket has an (x,y) position.
+        # The position can be provided at creation, and if not then
+        # the default position will be (0,0) using default parameters.
+        # self is used to refer to the specific instance of the object
+        self.x = x
+        self.y = y
+    
+    # This move_up(self) function is a normal method and it must also
+    # have self as its first parameter to refer to the specific instance
+    def move_up(self):
+        # Increment the y-position of the rocket.
+        self.y += 1
 
+# we create an instance of the method in a similar way to variables
+my_rocket = Rocket()
+my_rocket.move_up()
+print('rocket position', my_rocket.x, my_rocket.y)
 
+# Note that the internal variables of the object are accessible outside
+# of the object.  In C++ terms this is like having the 'public' attribute
+# apply to all member variables.
+# Rather than use public/private keywords as in C++, there is a 
+# naming convention that varibles starting with an _underscore 
+# should be treated as internal, and not used as part of the public
+# API of the class.
+# So, let's create another classe and see what happens if we use
+# a name with an underscore
+class Protector():
+    def __init__(self):
+        # double __underscore means private
+        self.__mysecret = 'ABC123'
+        self._lesssecret = 'DEF456'
 
+    # We can declare a member variable directly, not inside a function
+    a_var = 987
 
+    # If we want to encapsulate the variable and have getter/setter
+    # functions.  This allows validation checks on setting
+    def get_secret(self):
+        return self.__mysecret
+    def set_secret(self, secret):
+        self.__mysecret = secret
+
+p = Protector()
+
+try:
+    print(p.__mysecret)
+except:
+    print('Did not access the variable with double __underscore')
+
+try:
+    print(p._lesssecret)
+except:
+    print('Did not access the variable with single _underscore')
+
+print('using getter function', p.get_secret())
+
+# We can access an internal variable declared directly that does not
+# have the double __underscore naming
+print(p.a_var)
+
+# Names with the single _underscore are a convention to discourage 
+# use outside of the object, but it is not enforced by the system
+p._lesssecret = 'changed it!'
+print(p._lesssecret)
 
