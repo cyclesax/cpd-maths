@@ -384,3 +384,73 @@ print(p.a_var)
 p._lesssecret = 'changed it!'
 print(p._lesssecret)
 
+# How to class attributes work? Do they vary by instance?
+p1 = Protector()
+print('p1', p1.a_var) # expect 987
+p2 = Protector()
+p2.a_var = 999
+print('p1', p1.a_var) # stays at 987
+print('p2', p2.a_var) # now 999 
+# what if we change it on the class?
+Protector.a_var = 123
+print('p1', p1.a_var) # changes to 123
+print('p2', p2.a_var) # now 999 
+p1.a_var = 456
+print('p1', p1.a_var) # changes to 456
+print('p2', p2.a_var) # still 999
+print('Protector.a_var', Protector.a_var) # is 123
+# create a new object and what does it have?
+p3 = Protector()
+print('p3', p3.a_var) # expect 123
+# The class attribute works ok unless there's a clashing name in which
+# case external access as above uses the object's version that masks
+# the class attribute.
+
+# Class methods can be created and called on a class rather than an
+# instance.  These methods cannot access the objects.
+
+class MyClass:
+    class_counter = 0
+
+    @classmethod
+    def IncrementClassCount(cls, num=1):
+        cls.class_counter += num
+
+mc = MyClass()
+mc.IncrementClassCount()
+mc.IncrementClassCount(4)
+print(mc.class_counter)
+
+# Classes can be created that inherit from another class
+class Pet:
+    def __init__(self, name):
+        self.name = name
+
+class Dog(Pet):
+    def __init__(self, name):
+        super().__init__(name)
+
+    def Speak(self):
+        print('woof, I am ', self.name)
+
+class Cat(Pet):
+    def __init__(self, name):
+        super().__init__(name)
+
+    def Speak(self):
+        print('meouw, I am', self.name)
+
+d = Dog('Pepper')
+c = Cat('Mash')
+
+d.Speak()
+c.Speak()
+
+# Static methods are how some libraries of functions work
+class Math:
+    @staticmethod  
+    def Add5(x):
+        return x + 5
+
+# no need to have an instance of the class, just call the class method
+print(Math.Add5(8))
