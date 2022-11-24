@@ -575,3 +575,40 @@ n[:] = 4
 print(m)
 print(n)
 print(q)
+
+
+# Part 7: 24 November: list comprehension
+# =======================================
+
+# A list comprehension is an efficient syntax for expression operations on a list
+# It can be much more efficient than a loop.  There are similar features in other
+# languages.
+# This creates a list from an operation on each item in a range 
+mylist = range(1,10)
+squares = [x**2 for x in mylist]
+print(squares)
+
+# we can add a filter on the items chosen
+even_squares = [x**2 for x in mylist if x % 2 == 0]
+print(even_squares) # => [4, 16, 36, 64]
+
+# comprehensions work with lists of strings
+fruit = ['apple', 'banana', 'chocolate']
+first_character = [name[0] for name in fruit]
+print(first_character) # => [a, b, c] 
+
+# and with individual characters in a string
+info = "Charlie 07987 654 321"
+phone_num = [x for x in info if x.isdigit()]
+print(phone_num)
+
+# could be used to read lines in a file ... but who knows whether this is fast
+file = open('demofile.txt', 'r')
+txt = [line.strip() for line in file]
+print(txt)
+
+# compound argments can be used
+nums = [x+y for x in [1,2,3] for y in [10,20,30]]
+print(nums)
+
+# => Using list comprehensions well will require a new way of thinking
