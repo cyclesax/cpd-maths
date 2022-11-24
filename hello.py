@@ -454,3 +454,124 @@ class Math:
 
 # no need to have an instance of the class, just call the class method
 print(Math.Add5(8))
+
+# Part 5: 23 November: Environments
+# =================================
+
+# Like most other modern languages, Python has a rich ecosystem of packages
+# in the public domain with different versions existing. When a computer is
+# used for more than a few software tasks there can be problems with version
+# clashes at the package/source code level
+
+# Virtual environments can  be created to address this.  This is an optional
+# feature.  The essence of this is a (hidden) folder .venv inside a project
+# folder that can hold a specific version of Python and pip plus all of the
+# packages required by the project.
+
+# This can make a project folder larger ... but can be reproduced and will
+# ensure separation.  Links and shortcuts may make some aspects of the
+# virtual environment more effcient ... but this is handled by the tools.
+
+# There are different ways of creating virtual environments by OS and by
+# IDE, but it is well supported by VS Code and its documentation.
+
+# This may not be an issue in small/personal environments, but it
+# would certainly be a big consideration for standardised and robust version
+# control in production environments in teaching or business to keep support
+# overheads under control.
+
+
+# Part 6: 23 November: numpy
+# ==========================
+
+# Python's lists can contain any type of variable and this makes them
+# potentially inefficient.  Also, manipulating data using Python code
+# that is iterpreted can be less efficient than compiled code.
+
+# Numpy is a package for "scientific" computing using multidimensional
+# array and associated functions.  There are many packages that use
+# numpy as its base.
+
+# Numpy can be more efficient because it is using a more efficient data
+# structure and also because functions in numpy's package that are
+# written in C can be used.
+
+import numpy as np
+
+# arange(15) returns a vector with 15 elements, starting at 0
+# and reshape converts this vector into a 2D matrix
+a = np.arange(15).reshape(3,5)
+print(a)
+
+print(type(a)) # returns <class 'numpy.ndarray'>
+print(type(a[0])) # returns <class 'numpy.ndarray'>
+print(type(a[0][0])) # returns <class 'numpy.int64'>
+
+print(a.ndim) # returns 2
+print(a.shape) # returns (3,5)
+print(a.dtype.name) # returns int64
+print(a.itemsize) # returns 8 (bytes)
+
+# We can apply some straigthforward operations with little code
+# as numpy is smart enough to allow a mix of matrix and scalar
+# expressions and do something sensible without visible loop code
+b = a + 5
+print(b)
+
+# numpy arrays can be created from normal lists
+c = np.array([1,2,3])
+print(type(c)) # returns <class 'numpy.ndarray'>
+
+# combinations of lists can produce arrays ... etc
+d = np.array([[1,2,3], [4,5,6]])
+print(d.shape) # returns (2,3)
+
+# Numpy has many functions included and numpy is used as the target
+# for many other packages that require fast calculations.
+# This is a good introduction to numpy arrays:
+# https://www.youtube.com/watch?v=lLRBYKwP8GQ
+
+# control over the specific data type at creation
+e = np.array([1,2,3], dtype=np.int8)
+
+# handy functions
+z = np.zeros((2,2))
+o = np.ones((2,2))
+x = np.empty((2,2)) # contains uninitialised data: dangerous?
+i = np.eye(3) # 1 on diagonal
+j = np.eye(5, k=-1) # 1 on sub-diagonal 
+
+# filtering can select items satisfying a condition
+j[j == 1] = 13 # updates values that were value 1 to 13
+print(j)
+
+# filtering (selecting) a specific row and amending
+j[0] = 3 # updates first row to value 3
+print(j)
+j[:2] = 4 # updates the first two rows (ie up to the stop value)
+print(j)
+
+# column operations are not quite so slick
+j[:,-1] = 99 # updates the last column, also showing index from RHS
+print(j)
+
+# can sort data in each row ... syntax defaults to row
+l = np.sort(j)
+print(l)
+
+# or we can sort by column
+m = np.sort(j, axis=0)
+print(m)
+
+# we can create a view of the data ... but be careful because if we
+# modify a view then the original data is changed ... a view is a reference
+# and not a copy.  But what's useful is that a view can have a different
+# shape and that does not impact on the shape of original data
+
+n = m.view()
+q = m.copy()
+
+n[:] = 4
+print(m)
+print(n)
+print(q)
