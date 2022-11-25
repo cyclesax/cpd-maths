@@ -612,3 +612,61 @@ nums = [x+y for x in [1,2,3] for y in [10,20,30]]
 print(nums)
 
 # => Using list comprehensions well will require a new way of thinking
+
+
+# Part 8: 25 November: JSON
+# =========================
+
+# JSON can be created and manipulated in Python with native support
+import json
+# This string could have come from a file ...
+jstr = '{ "name":"John", "age":30, "city":"New York"}'
+
+# This returns a Python dictionary
+j = json.loads(jstr)
+
+print(j['age']) # => 30
+
+# what if we have something more complex?
+# we get back a more complex dictionary and as that can hold anything it
+# converts nicely to Python objects.
+jstr = '{ "name":"John", "myarray":[30, 40, 50]}'
+j = json.loads(jstr)
+print(type(j['myarray'])) # => list
+
+# make a simple amendment to the data whilst in Python form
+j['myarray'].append(99)
+
+# how do we save this to a file?
+# just write the dumps() string to a file
+f = open("demofile.json", "w")
+f.write(json.dumps(j))
+f.close()
+
+# for completeness, let's load it back
+def CheckJsonFileRead():
+    f = open("demofile.json", 'r')
+    kstr = f.read()
+    k = json.loads(kstr)
+    f.close()
+    print(k == j)
+    assert k == j
+
+CheckJsonFileRead()
+
+# Check that it works if we have the object split over lots of lines
+f = open("demofile.json", "w")
+# create a messy but legal version
+f.write('{"name":"John"\n,\n "myarray":\n[30,\n\n 40, 50,99\n]\n}')
+f.close()
+
+CheckJsonFileRead()
+
+# Other things to look at, standard:
+# Pandas
+# Plotting ... matplotlib
+
+# More adventurous areas:
+# Cython
+# Embedding
+# Extending
