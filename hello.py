@@ -662,6 +662,74 @@ f.close()
 
 CheckJsonFileRead()
 
+
+# Part 9: 1 December: CSV
+# =======================
+
+# There is a standard module that provides CSV functionality and has various
+# options to parameterise the read/write processes to deal with dialects that
+# exist in common sub-dialects, eg as preferred by Excel.
+import csv
+
+with open('mycsv.csv', 'w', newline='') as csvfile:
+    spamwriter = csv.writer(csvfile, delimiter=',')
+    spamwriter.writerow(['Spam'] * 5 + ['Baked Beans'])
+    spamwriter.writerow(['Spam', 'Lovely Spam', 'Wonderful Spam'])
+
+# The file created just contains data, but does not contain a field header row
+# at the start.  This could be added by just having another row sent at the start
+
+with open('mycsv.csv', newline='') as csvfile:
+    spamreader = csv.reader(csvfile, delimiter=',')
+    for row in spamreader:
+        # each row here is a list containing strings
+        print(row)
+
+# CSVs that have a first row with field names are produced by many DB systems and
+# this is also a logical format of choice so that the fieldnames can be dynamic
+# and data-driven rather than in either a separate file or hard coded in a program.
+
+# There is a csv.Sniffer class that looks at the data and seeks to deduce information
+# including whether there is a header.  This could be useful, but might give all sorts
+# of false positives/negatives.  However, in some situations this may be more helpful
+# with a more restricted subset of data and be part of some dynamic identification.
+
+# Let's do this again with a header, which from a writing perspective is just another
+# row of data
+with open('data.csv', 'w', newline='') as csvfile:
+    datawriter = csv.writer(csvfile, delimiter=',')
+    # This is my header row
+    datawriter.writerow(['PolNum','Age','Term','SA','Premium'])
+    datawriter.writerow(['P001', 25, 10, 100000, 100])
+    datawriter.writerow(['P002', 35, 12, 200000, 150])
+    datawriter.writerow(['P003', 45, 15, 300000, 200])
+
+# Now we can read it back and give the first row special treatment
+with open('data.csv', newline='') as csvfile:
+    datareader = csv.reader(csvfile, delimiter=',')
+    # special treatment puts names into a list
+    header = []
+    header = next(datareader)
+    print(header)
+    for row in datareader:
+        # each row here is a list containing strings
+        print(row)
+
+# if we were very confident of the data ... perhaps we wrote it in a stable
+# and well controlled piece of code earlier ... then we could have a small
+# amount of validation code ... but we might have to have extensive checks
+# if the data is less well controlled in upstream processes.
+
+# csv also allows a dictionary to be read (or written) using the header
+# field names as the dictionary keys.  Once again, you'd need to have some
+# confidence on the data structure ... or write lots of validation code.
+with open('data.csv', newline='') as csvfile:
+    reader = csv.DictReader(csvfile)
+    for row in reader:
+        print(row['PolNum'], row['SA'])
+
+
+
 # Other things to look at, standard:
 # Pandas
 # Plotting ... matplotlib
