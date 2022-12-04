@@ -729,6 +729,42 @@ with open('data.csv', newline='') as csvfile:
         print(row['PolNum'], row['SA'])
 
 
+# Part 10: 14 December: main() function and parameters from command line
+# ======================================================================
+
+# When run at the command line using "python hello.py" the special variable
+# __name__ will have the value "__main__" and then we would know to call
+# the main function.  This is done explicitly in our code, unlike many
+# compiled languages that require this as the executable's entry point.
+# Then we can define a main() function and execute it if the name of
+# this special variable is "__main__".
+
+print("The value of __name__ is:", repr(__name__))
+print("The value from a module is: ", mymodule.GetNameString())
+
+# There are two ways of parsing arguments ... argparse is an easier way.
+
+import argparse
+
+def test(para):
+    print("in test", para)
+
+def main():
+    print("in main function")
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-t', '--test')
+    parser.add_argument('-a', '--addtest')
+    parser.add_argument('-v', dest='verbose', action='store_true')
+    args = parser.parse_args()
+    print(args)
+    test("called from main")
+    
+    # Now we can respond to whatever we received 
+    
+if __name__ == "__main__":
+    main()
+
+
 
 # Other things to look at, standard:
 # Pandas
